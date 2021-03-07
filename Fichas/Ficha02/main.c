@@ -2,76 +2,77 @@
 
 //Esta ficha tem os mecanismos de resolução no enunciado de forma mais detalhada
 
-// Ficha 2 - PI 2019/20
-
 float multInt1(int n, float m){
-    float r = 0;
-    for(int i = 0; i < n; i++){
-        r += m;
-    }
-    return r;
+	float r = 0;
+	while(n != 0){
+		r += m;
+		if(n < 0){
+			n++;
+		} else {
+			n--;
+		}
+	}
 }
 
 float multInt2(int n, float m){
-    float r = 0; //Variável à qual vamos somando os valores que m toma durante a execução do processo
-    while(n != 1){ //Temos de parar o processo quando o n chega a 1
-        if(n % 2 != 0) r += m;
-        n = n / 2;
-        m = m * 2;
-    }
-    r += m;
-    return r;
+	float r = 0;
+	while(n != 0){
+		if(n % 2 == 1){
+			r+= m;
+		}
+		n /= 2;
+		m *= 2;
+	}
+	return r;
 }
 
-int mdc1(int a, int b){
-    int min,max,div;
-    if(a == b){
-        return a;
-    } else if (a < b){
-        min = div = a;
-        max = b;
-    } else if (b < a){
-        min = div = b;
-        max = a;
-    }
-    while(div != 0){
-        if(max % div == 0 && min % div == 0){
-            return div;
-        } else {
-            div--;
-        }
-    }
-    return -1;
+int mdc1 (int a, int b){
+	int i;
+	if(a < b){
+		i = a;
+	} else {
+		i = b;
+	}
+
+	while((b % i != 0 || a % i != 0) && i != 0){
+			i--;
+	}
+	if(i == 0) i = -1;
+	return i;
 }
 
-int mdc2(int a, int b){ //Este algoritmo não contempla os casos em que não existe mdc!!
-    if(a == b){
-        return a;
-    }
-    else if(a > b){
-        mdc2(a-b,b);
-    }
-    else if (b > a){
-        mdc2(a,b-a);
-    }
+int mdc2 (int a, int b){
+	int r = -1;
+
+	if(a > b){
+		r = mdc2(a-b,b); 
+	} else if (a < b){
+		r = mdc2(a,b-a);
+	} else {
+		r = a;
+	}
+
+	return r;
 }
 
-int mdc3(int a, int b){ //Este algoritmo não contempla os casos em que não existe mdc!!
-    if(a == b){
-        return a;
-    }
-    else if(a > b){
-        mdc2(a%b,b);
-    }
-    else if (b > a){
-        mdc2(a,b%a);
-    }
+int mdc3 (int a, int b){
+	int r = -1;
+
+	if(a > b){
+		r = mdc2(a%b,b); 
+	} else if (a < b){
+		r = mdc2(a,b%a);
+	} else {
+		r = a;
+	}
+
+	return r;
 }
 
 int fib1(int n){
     int f;
     if(n < 3){
-        return 1;
+        f = 1;
     } else {
         f = fib1(n-1) + fib1(n-2);
     }
@@ -95,70 +96,76 @@ int fib2(int n){
     }
 }
 
-int main() {
-    printf("Questão a executar: ");
-    int q;
-    scanf("%d",&q);
+void main(){
+	int p = -1;
+	
+	while(p != 0){
+		printf("1.- Multiplicação de n por m\n");
+		printf("2.- Multiplicação usando a representação binária\n");
+		printf("3.- MDC iterativo\n");
+		printf("4.- MDC Euclides\n");
+		printf("5.- MDC mais eficiente\n");
+		printf("0.- Sair\n");
+		printf("Pergunta a executar: ");
+		scanf("%d",&p);
+		switch(p){
+			case 1:	printf("Insira o valor de m (float): ");
+					float m1;
+					scanf("%f",&m1);
+					printf("Insira o valor de n (inteiro): ");
+					int n1;
+					scanf("%d",&n1);
+					float r1 = multInt1(n1,m1);
+					printf("\n\n %.2f * %d = %.2f \n\n",m1,n1,r1);
+					break;
 
-    //Pergunta 1 e 2
-    int n;
-    float m,r;
+			case 2: printf("Insira o valor de m (float): ");
+					float m2;
+					scanf("%f",&m2);
+					printf("Insira o valor de n (int): ");
+					int n2;
+					scanf("%d",&n2);
+					float r2 = multInt2(n2,m2);
+					printf("\n\n %.2f * %d = %.2f \n\n",m2,n2,r2);
+					break;
 
-    //Pergunta 3, 4 e 5
-    int a,b;
-    int mdc;
+			case 3: printf("Insira o valor de a: ");
+					int a3;
+					scanf("%d",&a3);
+					printf("Insira o valor de b: ");
+					int b3;
+					scanf("%d",&b3);
+					int r3 = mdc1(a3,b3);
+					printf("\n\n mdc(%d,%d) = %d \n\n",a3,b3,r3);
+					break;
 
-    //Pergunta 6 (a) e 6 (b)
-    int f; //A n usada é a das perguntas 1 e 2
+			case 4: printf("Insira o valor de a: ");
+					int a4;
+					scanf("%d",&a4);
+					printf("Insira o valor de b: ");
+					int b4;
+					scanf("%d",&b4);
+					int r4 = mdc2(a4,b4);
+					printf("\n\n mdc(%d,%d) = %d \n\n",a4,b4,r4);
+					break;
 
-    switch (q) {
-        case 1:
-            printf("Insira um inteiro: ");
-            scanf("%d",&n);
-            printf("Insira o valor a ser multiplicado: ");
-            scanf("%f",&m);
-            r = multInt1(n,m);
-            printf("%d * %2.f = %.2f\n",n,m,r);
-            break;
-        case 2:
-            printf("Insira um inteiro: ");
-            scanf("%d",&n);
-            printf("Insira o valor a ser multiplicado: ");
-            scanf("%f",&m);
-            r = multInt2(n,m);
-            printf("%d * %2.f = %.2f\n",n,m,r);
-            break;
-        case 3:
-            printf("Insira um inteiro: ");
-            scanf("%d",&a);
-            printf("Insira um inteiro: ");
-            scanf("%d",&b);
-            mdc = mdc1(a,b);
-            printf("mdc = %d\n",mdc);
-            break;
-        case 4:
-            printf("Insira um inteiro: ");
-            scanf("%d",&a);
-            printf("Insira um inteiro: ");
-            scanf("%d",&b);
-            mdc = mdc2(a,b);
-            printf("mdc = %d\n",mdc);
-            break;
-        case 5:
-            printf("Insira um inteiro: ");
-            scanf("%d",&a);
-            printf("Insira um inteiro: ");
-            scanf("%d",&b);
-            mdc = mdc3(a,b);
-            printf("mdc = %d\n",mdc);
-            break;
-        case 6:
-            printf("Calcular o elemento de ordem: ");
-            scanf("%d",&n);
-            f = fib1(n);
-            printf("método 1 -> %d\n",f);
-            f = fib2(n);
-            printf("método 2 -> %d\n",f);
+			case 5: printf("Insira o valor de a: ");
+					int a5;
+					scanf("%d",&a5);
+					printf("Insira o valor de b: ");
+					int b5;
+					scanf("%d",&b5);
+					int r5 = mdc3(a5,b5);
+					printf("\n\n mdc(%d,%d) = %d \n\n",a5,b5,r5);
+					break;		
+					
+			case 0: printf("Exiting\n");
+					break;
 
-    }
+			default: printf("Opção inválida\n");
+					 break;				
+
+		}
+	}
+	printf("Saíndo do programa!\n");
 }
